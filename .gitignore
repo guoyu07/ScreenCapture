@@ -1,0 +1,4 @@
+src/ScreenCapture/bin
+src/ScreenCapture/obj
+*.user
+*.suo
