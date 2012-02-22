@@ -32,13 +32,13 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PreferencesForm));
 			this.notify = new System.Windows.Forms.NotifyIcon(this.components);
 			this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.screenShotMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.preferencesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.screenShotMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
@@ -82,6 +82,17 @@
 			this.contextMenu.Name = "contextMenu";
 			this.contextMenu.Size = new System.Drawing.Size(160, 126);
 			// 
+			// screenShotMenuItem
+			// 
+			this.screenShotMenuItem.Name = "screenShotMenuItem";
+			this.screenShotMenuItem.Size = new System.Drawing.Size(159, 22);
+			this.screenShotMenuItem.Text = "Take screenshot";
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(156, 6);
+			// 
 			// preferencesMenuItem
 			// 
 			this.preferencesMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -112,17 +123,6 @@
 			this.exitMenuItem.Size = new System.Drawing.Size(159, 22);
 			this.exitMenuItem.Text = "Exit";
 			this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(156, 6);
-			// 
-			// screenShotMenuItem
-			// 
-			this.screenShotMenuItem.Name = "screenShotMenuItem";
-			this.screenShotMenuItem.Size = new System.Drawing.Size(159, 22);
-			this.screenShotMenuItem.Text = "Take screenshot";
 			// 
 			// textBox1
 			// 
@@ -273,7 +273,6 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "PreferencesForm";
-			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Preferences";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PreferencesForm_FormClosing);
