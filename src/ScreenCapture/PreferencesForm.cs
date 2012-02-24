@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading;
+using System.Drawing.Imaging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,6 +21,8 @@ namespace RSTL.ScreenCapture
 		{
 			InitializeComponent();
 			hotKey = new Hotkey();
+			imageFormat.SelectedIndex = 0;
+			saveFolderPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 		}
 
 		~PreferencesForm()
@@ -66,14 +71,112 @@ namespace RSTL.ScreenCapture
 
 		private void PreferencesForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			//Hide();
-			//e.Cancel = true;
+			if (e.CloseReason == CloseReason.UserClosing)
+			{
+				Hide();
+				e.Cancel = true;
+			}
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		private void SaveScreenShot(Bitmap image)
 		{
+			if (saveToClipboard.Checked)
+			{
+				ShowBalloonMessage("Image saved to the clipboard");
+				Clipboard.SetImage(image);
+			}
+			else if (askWhereToSave.Checked)
+			{
+				AskToSaveImage(image);
+			}
+		}
+
+		private void AskToSaveImage(Bitmap image)
+		{
+			saveFileDialog.FileName = ScreenShotFileName;
+			saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+			DialogResult result = saveFileDialog.ShowDialog();
+
+			if (result == DialogResult.OK)
+			{
+				image.Save(saveFileDialog.FileName, GetImageFormat);
+			}
+		}
+
+		private ImageFormat GetImageFormat
+		{
+			get
+			{
+				return imageFormat.SelectedText == "JPG" ? ImageFormat.Jpeg : ImageFormat.Png;
+			}
+		}
+
+		private string ScreenShotFileName
+		{
+			get { return string.Format("Screenshot {0}.{1}", DateTime.Now.ToString("MMM dd H-mm-s"), imageFormat.Text.ToLower()); }
+		}
+
+		private void ShowBalloonMessage(string message)
+		{
+			notify.BalloonTipText = message;
+			notify.ShowBalloonTip(2000);
+		}
+
+		private ScreenShotForm ShowScreenShotForm()
+		{
+			Hide();
+			Thread.Sleep(100);
+
 			ScreenShotForm f = new ScreenShotForm();
+			f.DidTakeScreenShot = (bitmap) => SaveScreenShot(bitmap);
 			f.Show();
+
+			return f;
+		}
+
+		private void screenShotMenuItem_Click(object sender, EventArgs e)
+		{
+			ScreenShotForm f = ShowScreenShotForm();
+			f.PrintScreen();
+		}
+
+		private void okButton_Click(object sender, EventArgs e)
+		{
+			Hide();
+		}
+
+		private void selectRegionMenuItem_Click(object sender, EventArgs e)
+		{
+			ShowScreenShotForm();
+		}
+
+		private void preferencesMenuItem_Click(object sender, EventArgs e)
+		{
+			Show();
+		}
+
+		private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Cursor original = Cursor.Current;
+
+			try
+			{
+				Cursor.Current = Cursors.WaitCursor;
+				Process.Start("http://rafaelsteil.com");
+			}
+			catch (Exception)
+			{
+			}
+			finally
+			{
+				Cursor.Current = original;
+			}
+		}
+
+		private void aboutMenuItem_Click(object sender, EventArgs e)
+		{
+			AboutForm f = new AboutForm();
+			f.ShowDialog(this);
 		}
 	}
 }

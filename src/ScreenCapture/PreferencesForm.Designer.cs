@@ -33,28 +33,28 @@
 			this.notify = new System.Windows.Forms.NotifyIcon(this.components);
 			this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.screenShotMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.selectRegionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.preferencesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
-			this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.shortcut = new System.Windows.Forms.TextBox();
+			this.imageFormat = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-			this.button2 = new System.Windows.Forms.Button();
+			this.okButton = new System.Windows.Forms.Button();
 			this.chooseFolderButton = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.label4 = new System.Windows.Forms.Label();
+			this.saveToClipboard = new System.Windows.Forms.RadioButton();
+			this.autoSave = new System.Windows.Forms.RadioButton();
+			this.askWhereToSave = new System.Windows.Forms.RadioButton();
+			this.saveFolderPath = new System.Windows.Forms.Label();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+			this.linkLabel = new System.Windows.Forms.LinkLabel();
 			this.contextMenu.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -63,6 +63,7 @@
 			// notify
 			// 
 			this.notify.BalloonTipText = "Screen Capture";
+			this.notify.BalloonTipTitle = "Message";
 			this.notify.ContextMenuStrip = this.contextMenu;
 			this.notify.Icon = ((System.Drawing.Icon)(resources.GetObject("notify.Icon")));
 			this.notify.Text = "Screen Capture";
@@ -73,85 +74,79 @@
 			// 
 			this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.screenShotMenuItem,
+            this.selectRegionMenuItem,
             this.toolStripSeparator2,
             this.preferencesMenuItem,
-            this.helpMenuItem,
             this.aboutMenuItem,
             this.toolStripSeparator1,
             this.exitMenuItem});
 			this.contextMenu.Name = "contextMenu";
-			this.contextMenu.Size = new System.Drawing.Size(160, 126);
+			this.contextMenu.Size = new System.Drawing.Size(153, 148);
 			// 
 			// screenShotMenuItem
 			// 
 			this.screenShotMenuItem.Name = "screenShotMenuItem";
-			this.screenShotMenuItem.Size = new System.Drawing.Size(159, 22);
-			this.screenShotMenuItem.Text = "Take screenshot";
+			this.screenShotMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.screenShotMenuItem.Text = "Print screen!";
+			this.screenShotMenuItem.Click += new System.EventHandler(this.screenShotMenuItem_Click);
+			// 
+			// selectRegionMenuItem
+			// 
+			this.selectRegionMenuItem.Name = "selectRegionMenuItem";
+			this.selectRegionMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.selectRegionMenuItem.Text = "Select region...";
+			this.selectRegionMenuItem.Click += new System.EventHandler(this.selectRegionMenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(156, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
 			// 
 			// preferencesMenuItem
 			// 
 			this.preferencesMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.preferencesMenuItem.Name = "preferencesMenuItem";
-			this.preferencesMenuItem.Size = new System.Drawing.Size(159, 22);
+			this.preferencesMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.preferencesMenuItem.Text = "Preferences";
-			// 
-			// helpMenuItem
-			// 
-			this.helpMenuItem.Name = "helpMenuItem";
-			this.helpMenuItem.Size = new System.Drawing.Size(159, 22);
-			this.helpMenuItem.Text = "Help";
+			this.preferencesMenuItem.Click += new System.EventHandler(this.preferencesMenuItem_Click);
 			// 
 			// aboutMenuItem
 			// 
 			this.aboutMenuItem.Name = "aboutMenuItem";
-			this.aboutMenuItem.Size = new System.Drawing.Size(159, 22);
+			this.aboutMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.aboutMenuItem.Text = "About";
+			this.aboutMenuItem.Click += new System.EventHandler(this.aboutMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(156, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
 			// 
 			// exitMenuItem
 			// 
 			this.exitMenuItem.Name = "exitMenuItem";
-			this.exitMenuItem.Size = new System.Drawing.Size(159, 22);
+			this.exitMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.exitMenuItem.Text = "Exit";
 			this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
 			// 
-			// textBox1
+			// shortcut
 			// 
-			this.textBox1.Location = new System.Drawing.Point(17, 53);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(210, 20);
-			this.textBox1.TabIndex = 2;
+			this.shortcut.Location = new System.Drawing.Point(17, 53);
+			this.shortcut.Name = "shortcut";
+			this.shortcut.Size = new System.Drawing.Size(210, 20);
+			this.shortcut.TabIndex = 2;
 			// 
-			// checkBox1
+			// imageFormat
 			// 
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Location = new System.Drawing.Point(18, 23);
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.Size = new System.Drawing.Size(115, 17);
-			this.checkBox1.TabIndex = 3;
-			this.checkBox1.Text = "Save automatically";
-			this.checkBox1.UseVisualStyleBackColor = true;
-			// 
-			// comboBox1
-			// 
-			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Items.AddRange(new object[] {
+			this.imageFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.imageFormat.FormattingEnabled = true;
+			this.imageFormat.Items.AddRange(new object[] {
             "JPG",
             "PNG"});
-			this.comboBox1.Location = new System.Drawing.Point(106, 24);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(50, 21);
-			this.comboBox1.TabIndex = 6;
+			this.imageFormat.Location = new System.Drawing.Point(80, 24);
+			this.imageFormat.Name = "imageFormat";
+			this.imageFormat.Size = new System.Drawing.Size(50, 21);
+			this.imageFormat.TabIndex = 6;
 			// 
 			// label2
 			// 
@@ -162,55 +157,30 @@
 			this.label2.TabIndex = 7;
 			this.label2.Text = "Format:";
 			// 
-			// label3
+			// okButton
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(15, 61);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(60, 13);
-			this.label3.TabIndex = 8;
-			this.label3.Text = "JPG quality";
-			// 
-			// numericUpDown1
-			// 
-			this.numericUpDown1.Location = new System.Drawing.Point(106, 59);
-			this.numericUpDown1.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-			this.numericUpDown1.Name = "numericUpDown1";
-			this.numericUpDown1.Size = new System.Drawing.Size(50, 20);
-			this.numericUpDown1.TabIndex = 9;
-			this.numericUpDown1.Value = new decimal(new int[] {
-            80,
-            0,
-            0,
-            0});
-			// 
-			// button2
-			// 
-			this.button2.Location = new System.Drawing.Point(182, 315);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(75, 23);
-			this.button2.TabIndex = 10;
-			this.button2.Text = "OK";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
+			this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.okButton.Location = new System.Drawing.Point(182, 313);
+			this.okButton.Name = "okButton";
+			this.okButton.Size = new System.Drawing.Size(75, 23);
+			this.okButton.TabIndex = 10;
+			this.okButton.Text = "OK";
+			this.okButton.UseVisualStyleBackColor = true;
+			this.okButton.Click += new System.EventHandler(this.okButton_Click);
 			// 
 			// chooseFolderButton
 			// 
-			this.chooseFolderButton.Location = new System.Drawing.Point(152, 21);
+			this.chooseFolderButton.Location = new System.Drawing.Point(154, 64);
 			this.chooseFolderButton.Name = "chooseFolderButton";
-			this.chooseFolderButton.Size = new System.Drawing.Size(75, 23);
+			this.chooseFolderButton.Size = new System.Drawing.Size(31, 23);
 			this.chooseFolderButton.TabIndex = 11;
-			this.chooseFolderButton.Text = "Choose...";
+			this.chooseFolderButton.Text = "...";
 			this.chooseFolderButton.UseVisualStyleBackColor = true;
 			// 
 			// groupBox1
 			// 
 			this.groupBox1.Controls.Add(this.label1);
-			this.groupBox1.Controls.Add(this.textBox1);
+			this.groupBox1.Controls.Add(this.shortcut);
 			this.groupBox1.Location = new System.Drawing.Point(12, 12);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(245, 100);
@@ -228,58 +198,107 @@
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.Add(this.label4);
-			this.groupBox2.Controls.Add(this.checkBox1);
+			this.groupBox2.Controls.Add(this.saveToClipboard);
+			this.groupBox2.Controls.Add(this.autoSave);
+			this.groupBox2.Controls.Add(this.askWhereToSave);
+			this.groupBox2.Controls.Add(this.saveFolderPath);
 			this.groupBox2.Controls.Add(this.chooseFolderButton);
 			this.groupBox2.Location = new System.Drawing.Point(12, 118);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(245, 85);
+			this.groupBox2.Size = new System.Drawing.Size(245, 122);
 			this.groupBox2.TabIndex = 13;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Save options";
 			// 
-			// label4
+			// saveToClipboard
 			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(15, 53);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(43, 13);
-			this.label4.TabIndex = 12;
-			this.label4.Text = "c:\\tmp\\";
+			this.saveToClipboard.AutoSize = true;
+			this.saveToClipboard.Location = new System.Drawing.Point(17, 42);
+			this.saveToClipboard.Name = "saveToClipboard";
+			this.saveToClipboard.Size = new System.Drawing.Size(126, 17);
+			this.saveToClipboard.TabIndex = 15;
+			this.saveToClipboard.Text = "Save to the clipboard";
+			this.saveToClipboard.UseVisualStyleBackColor = true;
+			// 
+			// autoSave
+			// 
+			this.autoSave.AutoSize = true;
+			this.autoSave.Location = new System.Drawing.Point(18, 65);
+			this.autoSave.Name = "autoSave";
+			this.autoSave.Size = new System.Drawing.Size(135, 17);
+			this.autoSave.TabIndex = 14;
+			this.autoSave.Text = "Save automatically to...";
+			this.autoSave.UseVisualStyleBackColor = true;
+			// 
+			// askWhereToSave
+			// 
+			this.askWhereToSave.AutoSize = true;
+			this.askWhereToSave.Checked = true;
+			this.askWhereToSave.Location = new System.Drawing.Point(17, 19);
+			this.askWhereToSave.Name = "askWhereToSave";
+			this.askWhereToSave.Size = new System.Drawing.Size(113, 17);
+			this.askWhereToSave.TabIndex = 13;
+			this.askWhereToSave.TabStop = true;
+			this.askWhereToSave.Text = "Ask where to save";
+			this.askWhereToSave.UseVisualStyleBackColor = true;
+			// 
+			// saveFolderPath
+			// 
+			this.saveFolderPath.AutoSize = true;
+			this.saveFolderPath.Location = new System.Drawing.Point(20, 91);
+			this.saveFolderPath.Name = "saveFolderPath";
+			this.saveFolderPath.Size = new System.Drawing.Size(43, 13);
+			this.saveFolderPath.TabIndex = 12;
+			this.saveFolderPath.Text = "c:\\tmp\\";
 			// 
 			// groupBox3
 			// 
 			this.groupBox3.Controls.Add(this.label2);
-			this.groupBox3.Controls.Add(this.comboBox1);
-			this.groupBox3.Controls.Add(this.label3);
-			this.groupBox3.Controls.Add(this.numericUpDown1);
-			this.groupBox3.Location = new System.Drawing.Point(12, 209);
+			this.groupBox3.Controls.Add(this.imageFormat);
+			this.groupBox3.Location = new System.Drawing.Point(12, 246);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(245, 100);
+			this.groupBox3.Size = new System.Drawing.Size(245, 61);
 			this.groupBox3.TabIndex = 14;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Image";
+			// 
+			// saveFileDialog
+			// 
+			this.saveFileDialog.RestoreDirectory = true;
+			// 
+			// linkLabel
+			// 
+			this.linkLabel.AutoSize = true;
+			this.linkLabel.LinkColor = System.Drawing.Color.Green;
+			this.linkLabel.Location = new System.Drawing.Point(13, 323);
+			this.linkLabel.Name = "linkLabel";
+			this.linkLabel.Size = new System.Drawing.Size(105, 13);
+			this.linkLabel.TabIndex = 15;
+			this.linkLabel.TabStop = true;
+			this.linkLabel.Text = "http://rafaelsteil.com";
+			this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
 			// 
 			// PreferencesForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(271, 349);
+			this.CancelButton = this.okButton;
+			this.ClientSize = new System.Drawing.Size(270, 346);
+			this.Controls.Add(this.linkLabel);
 			this.Controls.Add(this.groupBox1);
-			this.Controls.Add(this.groupBox3);
 			this.Controls.Add(this.groupBox2);
-			this.Controls.Add(this.button2);
+			this.Controls.Add(this.groupBox3);
+			this.Controls.Add(this.okButton);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "PreferencesForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Preferences";
+			this.Text = "Screenshot Tool";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PreferencesForm_FormClosing);
 			this.Load += new System.EventHandler(this.PreferencesForm_Load);
 			this.Resize += new System.EventHandler(this.PreferencesForm_Resize);
 			this.contextMenu.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
@@ -287,6 +306,7 @@
 			this.groupBox3.ResumeLayout(false);
 			this.groupBox3.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -295,26 +315,27 @@
 		private System.Windows.Forms.NotifyIcon notify;
 		private System.Windows.Forms.ContextMenuStrip contextMenu;
 		private System.Windows.Forms.ToolStripMenuItem preferencesMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem helpMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem exitMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem screenShotMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.TextBox textBox1;
-		private System.Windows.Forms.CheckBox checkBox1;
-		private System.Windows.Forms.FolderBrowserDialog folderBrowser;
-		private System.Windows.Forms.ComboBox comboBox1;
+		private System.Windows.Forms.TextBox shortcut;
+		private System.Windows.Forms.ComboBox imageFormat;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.NumericUpDown numericUpDown1;
-		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button okButton;
 		private System.Windows.Forms.Button chooseFolderButton;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Label saveFolderPath;
 		private System.Windows.Forms.GroupBox groupBox3;
+		private System.Windows.Forms.RadioButton saveToClipboard;
+		private System.Windows.Forms.RadioButton autoSave;
+		private System.Windows.Forms.RadioButton askWhereToSave;
+		private System.Windows.Forms.ToolStripMenuItem selectRegionMenuItem;
+		private System.Windows.Forms.SaveFileDialog saveFileDialog;
+		private System.Windows.Forms.LinkLabel linkLabel;
 	}
 }
 

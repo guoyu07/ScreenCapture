@@ -14,6 +14,9 @@ namespace RSTL.ScreenCapture
 		private Rectangle rect;
 		private bool canceled;
 
+		public Action<Bitmap> DidTakeScreenShot { get; set; }
+		public Action DidCancel { get; set; }
+
 		public ScreenShotForm()
 		{
 			InitializeComponent();
@@ -32,12 +35,18 @@ namespace RSTL.ScreenCapture
 
 		private void CaptureScreenshot()
 		{
+			Hide();
+
 			using (Bitmap bitmap = new Bitmap(rect.Width, rect.Height))
 			{
 				using (Graphics g = Graphics.FromImage(bitmap))
 				{
 					g.CopyFromScreen(rect.X, rect.Y, 0, 0, rect.Size);
-					Clipboard.SetImage(bitmap);
+
+					if (DidTakeScreenShot != null)
+					{
+						DidTakeScreenShot(bitmap);
+					}
 				}
 			}
 
@@ -82,8 +91,20 @@ namespace RSTL.ScreenCapture
 			}
 			else
 			{
+				if (DidCancel != null)
+				{
+					DidCancel();
+				}
+
 				Dispose();
 			}
+		}
+
+		internal void PrintScreen()
+		{
+			Rectangle bounds = Screen.GetBounds(Point.Empty);
+			rect = new Rectangle(0, 0, bounds.Width, bounds.Height);
+			CaptureScreenshot();
 		}
 	}
 }

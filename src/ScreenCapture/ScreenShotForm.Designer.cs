@@ -43,6 +43,7 @@
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.TopMost = true;
 			this.TransparencyKey = System.Drawing.Color.Lime;
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.ScreenShotForm_Paint);
