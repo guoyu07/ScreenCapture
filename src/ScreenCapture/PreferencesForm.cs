@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,7 +16,11 @@ namespace RSTL.ScreenCapture
 {
 	public partial class PreferencesForm : Form
 	{
+		[DllImport("user32.dll")]
+		private static extern bool HideCaret(IntPtr hWnd);
+
 		private Hotkey hotKey;
+		private LinkedList<KeyEventArgs> shortcutKeys = new LinkedList<KeyEventArgs>();
 
 		public PreferencesForm()
 		{
@@ -73,8 +78,8 @@ namespace RSTL.ScreenCapture
 		{
 			if (e.CloseReason == CloseReason.UserClosing)
 			{
-				Hide();
-				e.Cancel = true;
+				//Hide();
+				//e.Cancel = true;
 			}
 		}
 
@@ -177,6 +182,109 @@ namespace RSTL.ScreenCapture
 		{
 			AboutForm f = new AboutForm();
 			f.ShowDialog(this);
+		}
+
+		private void shortcut_KeyDown(object sender, KeyEventArgs e)
+		{
+			e.SuppressKeyPress = true;
+			e.Handled = true;
+
+			if (ShortcutContainsKey(e))
+			{
+				return;
+			}
+
+			if (e.KeyCode == Keys.Back)
+			{
+				if (shortcutKeys.Count > 0)
+				{
+					shortcutKeys.RemoveLast();
+				}
+			}
+			else if (CountNonMetaKeys() == 0)
+			{
+				shortcutKeys.AddLast(e);
+			}
+
+			StringBuilder sb = new StringBuilder();
+
+			foreach (KeyEventArgs k in SortShortcuts())
+			{
+				if (sb.Length > 0)
+				{
+					sb.Append(" + ");
+				}
+
+				sb.AppendFormat("{0}", GetNiceKey(k));
+			}
+
+			shortcut.Text = sb.ToString();
+		}
+
+		private IEnumerable<KeyEventArgs> SortShortcuts()
+		{
+			return (from item in shortcutKeys orderby item.KeyCode select item);
+		}
+
+		private int CountNonMetaKeys()
+		{
+			return (from item in shortcutKeys where !IsMetaKey(item.KeyCode) select item).Count();
+		}
+
+		private bool ShortcutContainsKey(KeyEventArgs e)
+		{
+			return (from item in shortcutKeys where item.KeyCode == e.KeyCode select item).Count() > 0;
+		}
+
+		private bool IsMetaKey(Keys k)
+		{
+			return k == Keys.ShiftKey || k == Keys.ControlKey
+				|| k == Keys.Menu || k == Keys.RWin || k == Keys.LWin;
+		}
+
+		private string GetNiceKey(KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.ControlKey)
+			{
+				return "CTRL";
+			}
+			else if (e.KeyCode == Keys.Menu)
+			{
+				return "ALT";
+			}
+			else if (e.KeyCode == Keys.LWin || e.KeyCode == Keys.RWin)
+			{
+				return "WIN";
+			}
+			else if (e.KeyCode == Keys.ShiftKey)
+			{
+				return "SHIFT";
+			}
+			else if (e.KeyValue >= '0' && e.KeyValue <= '9')
+			{
+				return ((char)e.KeyValue).ToString();
+			}
+
+			return e.KeyCode.ToString();
+		}
+
+		private void shortcut_Enter(object sender, EventArgs e)
+		{
+			HideCaret(shortcut.Handle);
+		}
+
+		private void applyShortcutButton_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				if (hotKey.GetCanRegister(shortcut))
+				{
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 	}
 }

@@ -39,7 +39,6 @@
 			this.aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.shortcut = new System.Windows.Forms.TextBox();
 			this.imageFormat = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.okButton = new System.Windows.Forms.Button();
@@ -54,6 +53,10 @@
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.linkLabel = new System.Windows.Forms.LinkLabel();
+			this.shortcut = new System.Windows.Forms.TextBox();
+			this.applyShortcutButton = new System.Windows.Forms.Button();
+			this.startAutomatically = new System.Windows.Forms.CheckBox();
+			this.checkUpdates = new System.Windows.Forms.CheckBox();
 			this.contextMenu.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
@@ -129,13 +132,6 @@
 			this.exitMenuItem.Text = "Exit";
 			this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
 			// 
-			// shortcut
-			// 
-			this.shortcut.Location = new System.Drawing.Point(17, 53);
-			this.shortcut.Name = "shortcut";
-			this.shortcut.Size = new System.Drawing.Size(210, 20);
-			this.shortcut.TabIndex = 2;
-			// 
 			// imageFormat
 			// 
 			this.imageFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -160,7 +156,7 @@
 			// okButton
 			// 
 			this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.okButton.Location = new System.Drawing.Point(182, 313);
+			this.okButton.Location = new System.Drawing.Point(187, 382);
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size(75, 23);
 			this.okButton.TabIndex = 10;
@@ -179,11 +175,12 @@
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.Add(this.label1);
+			this.groupBox1.Controls.Add(this.applyShortcutButton);
 			this.groupBox1.Controls.Add(this.shortcut);
+			this.groupBox1.Controls.Add(this.label1);
 			this.groupBox1.Location = new System.Drawing.Point(12, 12);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(245, 100);
+			this.groupBox1.Size = new System.Drawing.Size(250, 108);
 			this.groupBox1.TabIndex = 12;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Shortcut";
@@ -203,9 +200,9 @@
 			this.groupBox2.Controls.Add(this.askWhereToSave);
 			this.groupBox2.Controls.Add(this.saveFolderPath);
 			this.groupBox2.Controls.Add(this.chooseFolderButton);
-			this.groupBox2.Location = new System.Drawing.Point(12, 118);
+			this.groupBox2.Location = new System.Drawing.Point(12, 126);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(245, 122);
+			this.groupBox2.Size = new System.Drawing.Size(250, 122);
 			this.groupBox2.TabIndex = 13;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Save options";
@@ -245,6 +242,7 @@
 			// saveFolderPath
 			// 
 			this.saveFolderPath.AutoSize = true;
+			this.saveFolderPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.saveFolderPath.Location = new System.Drawing.Point(20, 91);
 			this.saveFolderPath.Name = "saveFolderPath";
 			this.saveFolderPath.Size = new System.Drawing.Size(43, 13);
@@ -255,9 +253,9 @@
 			// 
 			this.groupBox3.Controls.Add(this.label2);
 			this.groupBox3.Controls.Add(this.imageFormat);
-			this.groupBox3.Location = new System.Drawing.Point(12, 246);
+			this.groupBox3.Location = new System.Drawing.Point(12, 254);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(245, 61);
+			this.groupBox3.Size = new System.Drawing.Size(250, 61);
 			this.groupBox3.TabIndex = 14;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Image";
@@ -270,7 +268,7 @@
 			// 
 			this.linkLabel.AutoSize = true;
 			this.linkLabel.LinkColor = System.Drawing.Color.Green;
-			this.linkLabel.Location = new System.Drawing.Point(13, 323);
+			this.linkLabel.Location = new System.Drawing.Point(12, 387);
 			this.linkLabel.Name = "linkLabel";
 			this.linkLabel.Size = new System.Drawing.Size(105, 13);
 			this.linkLabel.TabIndex = 15;
@@ -278,18 +276,63 @@
 			this.linkLabel.Text = "http://rafaelsteil.com";
 			this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
 			// 
+			// shortcut
+			// 
+			this.shortcut.Location = new System.Drawing.Point(18, 46);
+			this.shortcut.Name = "shortcut";
+			this.shortcut.Size = new System.Drawing.Size(216, 20);
+			this.shortcut.TabIndex = 4;
+			this.shortcut.Enter += new System.EventHandler(this.shortcut_Enter);
+			this.shortcut.KeyDown += new System.Windows.Forms.KeyEventHandler(this.shortcut_KeyDown);
+			// 
+			// applyShortcutButton
+			// 
+			this.applyShortcutButton.Location = new System.Drawing.Point(171, 72);
+			this.applyShortcutButton.Name = "applyShortcutButton";
+			this.applyShortcutButton.Size = new System.Drawing.Size(63, 23);
+			this.applyShortcutButton.TabIndex = 5;
+			this.applyShortcutButton.Text = "Apply";
+			this.applyShortcutButton.UseVisualStyleBackColor = true;
+			this.applyShortcutButton.Click += new System.EventHandler(this.applyShortcutButton_Click);
+			// 
+			// startAutomatically
+			// 
+			this.startAutomatically.AutoSize = true;
+			this.startAutomatically.Checked = true;
+			this.startAutomatically.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.startAutomatically.Location = new System.Drawing.Point(14, 328);
+			this.startAutomatically.Name = "startAutomatically";
+			this.startAutomatically.Size = new System.Drawing.Size(117, 17);
+			this.startAutomatically.TabIndex = 16;
+			this.startAutomatically.Text = "Start with Windows";
+			this.startAutomatically.UseVisualStyleBackColor = true;
+			// 
+			// checkUpdates
+			// 
+			this.checkUpdates.AutoSize = true;
+			this.checkUpdates.Checked = true;
+			this.checkUpdates.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkUpdates.Location = new System.Drawing.Point(12, 351);
+			this.checkUpdates.Name = "checkUpdates";
+			this.checkUpdates.Size = new System.Drawing.Size(177, 17);
+			this.checkUpdates.TabIndex = 17;
+			this.checkUpdates.Text = "Automatically check for updates";
+			this.checkUpdates.UseVisualStyleBackColor = true;
+			// 
 			// PreferencesForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.okButton;
-			this.ClientSize = new System.Drawing.Size(270, 346);
-			this.Controls.Add(this.linkLabel);
+			this.ClientSize = new System.Drawing.Size(276, 422);
+			this.Controls.Add(this.checkUpdates);
+			this.Controls.Add(this.startAutomatically);
 			this.Controls.Add(this.groupBox1);
+			this.Controls.Add(this.linkLabel);
+			this.Controls.Add(this.okButton);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox3);
-			this.Controls.Add(this.okButton);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "PreferencesForm";
@@ -320,7 +363,6 @@
 		private System.Windows.Forms.ToolStripMenuItem exitMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem screenShotMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.TextBox shortcut;
 		private System.Windows.Forms.ComboBox imageFormat;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button okButton;
@@ -336,6 +378,10 @@
 		private System.Windows.Forms.ToolStripMenuItem selectRegionMenuItem;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog;
 		private System.Windows.Forms.LinkLabel linkLabel;
+		private System.Windows.Forms.Button applyShortcutButton;
+		private System.Windows.Forms.TextBox shortcut;
+		private System.Windows.Forms.CheckBox startAutomatically;
+		private System.Windows.Forms.CheckBox checkUpdates;
 	}
 }
 
