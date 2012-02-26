@@ -44,6 +44,8 @@
 			this.okButton = new System.Windows.Forms.Button();
 			this.chooseFolderButton = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.applyShortcutButton = new System.Windows.Forms.Button();
+			this.shortcut = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.saveToClipboard = new System.Windows.Forms.RadioButton();
@@ -53,10 +55,9 @@
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.linkLabel = new System.Windows.Forms.LinkLabel();
-			this.shortcut = new System.Windows.Forms.TextBox();
-			this.applyShortcutButton = new System.Windows.Forms.Button();
 			this.startAutomatically = new System.Windows.Forms.CheckBox();
 			this.checkUpdates = new System.Windows.Forms.CheckBox();
+			this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.contextMenu.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
@@ -143,6 +144,7 @@
 			this.imageFormat.Name = "imageFormat";
 			this.imageFormat.Size = new System.Drawing.Size(50, 21);
 			this.imageFormat.TabIndex = 6;
+			this.imageFormat.SelectedIndexChanged += new System.EventHandler(this.imageFormat_SelectedIndexChanged);
 			// 
 			// label2
 			// 
@@ -172,6 +174,7 @@
 			this.chooseFolderButton.TabIndex = 11;
 			this.chooseFolderButton.Text = "...";
 			this.chooseFolderButton.UseVisualStyleBackColor = true;
+			this.chooseFolderButton.Click += new System.EventHandler(this.chooseFolderButton_Click);
 			// 
 			// groupBox1
 			// 
@@ -184,6 +187,25 @@
 			this.groupBox1.TabIndex = 12;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Shortcut";
+			// 
+			// applyShortcutButton
+			// 
+			this.applyShortcutButton.Location = new System.Drawing.Point(171, 72);
+			this.applyShortcutButton.Name = "applyShortcutButton";
+			this.applyShortcutButton.Size = new System.Drawing.Size(63, 23);
+			this.applyShortcutButton.TabIndex = 5;
+			this.applyShortcutButton.Text = "Apply";
+			this.applyShortcutButton.UseVisualStyleBackColor = true;
+			this.applyShortcutButton.Click += new System.EventHandler(this.applyShortcutButton_Click);
+			// 
+			// shortcut
+			// 
+			this.shortcut.Location = new System.Drawing.Point(18, 46);
+			this.shortcut.Name = "shortcut";
+			this.shortcut.Size = new System.Drawing.Size(216, 20);
+			this.shortcut.TabIndex = 4;
+			this.shortcut.Enter += new System.EventHandler(this.shortcut_Enter);
+			this.shortcut.KeyDown += new System.Windows.Forms.KeyEventHandler(this.shortcut_KeyDown);
 			// 
 			// label1
 			// 
@@ -216,6 +238,7 @@
 			this.saveToClipboard.TabIndex = 15;
 			this.saveToClipboard.Text = "Save to the clipboard";
 			this.saveToClipboard.UseVisualStyleBackColor = true;
+			this.saveToClipboard.CheckedChanged += new System.EventHandler(this.saveToClipboard_CheckedChanged);
 			// 
 			// autoSave
 			// 
@@ -226,6 +249,7 @@
 			this.autoSave.TabIndex = 14;
 			this.autoSave.Text = "Save automatically to...";
 			this.autoSave.UseVisualStyleBackColor = true;
+			this.autoSave.CheckedChanged += new System.EventHandler(this.autoSave_CheckedChanged);
 			// 
 			// askWhereToSave
 			// 
@@ -238,6 +262,7 @@
 			this.askWhereToSave.TabStop = true;
 			this.askWhereToSave.Text = "Ask where to save";
 			this.askWhereToSave.UseVisualStyleBackColor = true;
+			this.askWhereToSave.CheckedChanged += new System.EventHandler(this.askWhereToSave_CheckedChanged);
 			// 
 			// saveFolderPath
 			// 
@@ -276,25 +301,6 @@
 			this.linkLabel.Text = "http://rafaelsteil.com";
 			this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
 			// 
-			// shortcut
-			// 
-			this.shortcut.Location = new System.Drawing.Point(18, 46);
-			this.shortcut.Name = "shortcut";
-			this.shortcut.Size = new System.Drawing.Size(216, 20);
-			this.shortcut.TabIndex = 4;
-			this.shortcut.Enter += new System.EventHandler(this.shortcut_Enter);
-			this.shortcut.KeyDown += new System.Windows.Forms.KeyEventHandler(this.shortcut_KeyDown);
-			// 
-			// applyShortcutButton
-			// 
-			this.applyShortcutButton.Location = new System.Drawing.Point(171, 72);
-			this.applyShortcutButton.Name = "applyShortcutButton";
-			this.applyShortcutButton.Size = new System.Drawing.Size(63, 23);
-			this.applyShortcutButton.TabIndex = 5;
-			this.applyShortcutButton.Text = "Apply";
-			this.applyShortcutButton.UseVisualStyleBackColor = true;
-			this.applyShortcutButton.Click += new System.EventHandler(this.applyShortcutButton_Click);
-			// 
 			// startAutomatically
 			// 
 			this.startAutomatically.AutoSize = true;
@@ -306,6 +312,7 @@
 			this.startAutomatically.TabIndex = 16;
 			this.startAutomatically.Text = "Start with Windows";
 			this.startAutomatically.UseVisualStyleBackColor = true;
+			this.startAutomatically.CheckedChanged += new System.EventHandler(this.startAutomatically_CheckedChanged);
 			// 
 			// checkUpdates
 			// 
@@ -318,6 +325,7 @@
 			this.checkUpdates.TabIndex = 17;
 			this.checkUpdates.Text = "Automatically check for updates";
 			this.checkUpdates.UseVisualStyleBackColor = true;
+			this.checkUpdates.CheckedChanged += new System.EventHandler(this.checkUpdates_CheckedChanged);
 			// 
 			// PreferencesForm
 			// 
@@ -382,6 +390,7 @@
 		private System.Windows.Forms.TextBox shortcut;
 		private System.Windows.Forms.CheckBox startAutomatically;
 		private System.Windows.Forms.CheckBox checkUpdates;
+		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
 	}
 }
 

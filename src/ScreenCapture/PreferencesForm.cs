@@ -26,8 +26,29 @@ namespace RSTL.ScreenCapture
 		{
 			InitializeComponent();
 			hotKey = new Hotkey();
-			imageFormat.SelectedIndex = 0;
-			saveFolderPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+		}
+
+		private void RestoreSettings()
+		{
+			UserSettings s = new UserSettings();
+
+			imageFormat.SelectedItem = s.ImageFormat;
+			saveFolderPath.Text = s.SaveDirectory == String.Empty ? Environment.GetFolderPath(Environment.SpecialFolder.Desktop) : s.SaveDirectory;
+			startAutomatically.Checked = s.StartWithWindows;
+			checkUpdates.Checked = s.AutoCheckUpdates;
+
+			if (s.SaveBehavior == SaveBehaviorEnum.Ask)
+			{
+				askWhereToSave.Checked = true;
+			}
+			else if (s.SaveBehavior == SaveBehaviorEnum.Clipboard)
+			{
+				saveToClipboard.Checked = true;
+			}
+			else if (s.SaveBehavior == SaveBehaviorEnum.Directory)
+			{
+				autoSave.Checked = true;
+			}
 		}
 
 		~PreferencesForm()
@@ -41,11 +62,6 @@ namespace RSTL.ScreenCapture
 			{
 				hotKey.Unregister();
 			}
-		}
-
-		private void PreferencesForm_Load(object sender, EventArgs e)
-		{
-
 		}
 
 		private void PreferencesForm_Resize(object sender, EventArgs e)
@@ -148,6 +164,7 @@ namespace RSTL.ScreenCapture
 		private void okButton_Click(object sender, EventArgs e)
 		{
 			Hide();
+			new UserSettings().Save();
 		}
 
 		private void selectRegionMenuItem_Click(object sender, EventArgs e)
@@ -285,6 +302,52 @@ namespace RSTL.ScreenCapture
 			{
 				MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
+		}
+
+		private void askWhereToSave_CheckedChanged(object sender, EventArgs e)
+		{
+			new UserSettings().SaveBehavior = SaveBehaviorEnum.Ask;
+		}
+
+		private void saveToClipboard_CheckedChanged(object sender, EventArgs e)
+		{
+			new UserSettings().SaveBehavior = SaveBehaviorEnum.Clipboard;
+		}
+
+		private void autoSave_CheckedChanged(object sender, EventArgs e)
+		{
+			new UserSettings().SaveBehavior = SaveBehaviorEnum.Directory;
+		}
+
+		private void chooseFolderButton_Click(object sender, EventArgs e)
+		{
+			DialogResult result = folderBrowserDialog.ShowDialog();
+
+			if (result == DialogResult.OK)
+			{
+				saveFolderPath.Text = folderBrowserDialog.SelectedPath;
+				new UserSettings().SaveDirectory = folderBrowserDialog.SelectedPath;
+			}
+		}
+
+		private void imageFormat_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			new UserSettings().ImageFormat = imageFormat.Text;
+		}
+
+		private void PreferencesForm_Load(object sender, EventArgs e)
+		{
+			RestoreSettings();
+		}
+
+		private void startAutomatically_CheckedChanged(object sender, EventArgs e)
+		{
+			new UserSettings().StartWithWindows = startAutomatically.Checked;
+		}
+
+		private void checkUpdates_CheckedChanged(object sender, EventArgs e)
+		{
+			new UserSettings().AutoCheckUpdates = checkUpdates.Checked;
 		}
 	}
 }
