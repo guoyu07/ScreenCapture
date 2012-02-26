@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Diagnostics;
 using System.Threading;
 using System.Drawing.Imaging;
@@ -18,20 +19,18 @@ namespace RSTL.ScreenCapture
 	{
 		[DllImport("user32.dll")]
 		private static extern bool HideCaret(IntPtr hWnd);
-
 		private Hotkey hotKey;
 		private LinkedList<KeyEventArgs> shortcutKeys = new LinkedList<KeyEventArgs>();
 
 		public PreferencesForm()
 		{
 			InitializeComponent();
-			hotKey = new Hotkey();
 		}
 
 		private void RestoreSettings()
 		{
 			UserSettings s = new UserSettings();
-
+			
 			imageFormat.SelectedItem = s.ImageFormat;
 			saveFolderPath.Text = s.SaveDirectory == String.Empty ? Environment.GetFolderPath(Environment.SpecialFolder.Desktop) : s.SaveDirectory;
 			startAutomatically.Checked = s.StartWithWindows;
@@ -109,6 +108,17 @@ namespace RSTL.ScreenCapture
 			else if (askWhereToSave.Checked)
 			{
 				AskToSaveImage(image);
+			}
+			else if (autoSave.Checked)
+			{
+				if (!Directory.Exists(saveFolderPath.Text))
+				{
+					AskToSaveImage(image);
+				}
+				else
+				{
+					image.Save(saveFolderPath.Text, GetImageFormat);
+				}
 			}
 		}
 
@@ -265,7 +275,7 @@ namespace RSTL.ScreenCapture
 			{
 				return "CTRL";
 			}
-			else if (e.KeyCode == Keys.Menu)
+			else if (e.KeyCode == Keys.Menu || e.KeyCode == Keys.Alt)
 			{
 				return "ALT";
 			}
@@ -294,14 +304,70 @@ namespace RSTL.ScreenCapture
 		{
 			try
 			{
+				int notMetaCount = shortcutKeys.Count(k => !IsMetaKey(k.KeyCode));
+				if (notMetaCount == 0)
+				{
+					ShowErrorMessage("You should also choose one character that is not CTRL, SHIFT, ALT or WIN");
+					return;
+				}
+
+				bool ctrl = false;
+				bool shift = false;
+				bool alt = false;
+				bool win = false;
+				Keys key = Keys.F19;
+
+				foreach (KeyEventArgs item in shortcutKeys)
+				{
+					if (item.KeyCode == Keys.ControlKey)
+					{
+						ctrl = true;
+					}
+					else if (item.KeyCode == Keys.ShiftKey)
+					{
+						shift = true;
+					}
+					else if (item.KeyCode == Keys.LWin || item.KeyCode == Keys.RWin)
+					{
+						win = true;
+					}
+					else if (item.KeyCode == Keys.Alt || item.KeyCode == Keys.Menu)
+					{
+						alt = true;
+					}
+					else
+					{
+						key = item.KeyCode;
+					}
+				}
+
+				if (hotKey != null && hotKey.Registered)
+				{
+					hotKey.Unregister();
+				}
+
+				hotKey = new Hotkey(key, shift, ctrl, alt, win);
+				hotKey.Pressed += (hkSender, hkArgs) => ShowScreenShotForm();
+
 				if (hotKey.GetCanRegister(shortcut))
 				{
+					hotKey.Register(shortcut);
+				}
+				else
+				{
+					MessageBox.Show(this, "There is another application using this combination already. Please choose another one", 
+						"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				}
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				ShowErrorMessage(ex.Message);
 			}
+		}
+
+		private void ShowErrorMessage(string message)
+		{
+			MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
 		private void askWhereToSave_CheckedChanged(object sender, EventArgs e)
