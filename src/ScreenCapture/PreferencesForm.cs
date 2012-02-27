@@ -147,7 +147,7 @@ namespace RSTL.ScreenCapture
 
 		private string ScreenShotFileName
 		{
-			get { return string.Format("Screenshot {0}.{1}", DateTime.Now.ToString("MMM dd H-mm-s"), imageFormat.Text.ToLower()); }
+			get { return string.Format("Screenshot {0}.{1}", DateTime.Now.ToString("MMM-dd H.mm.s"), imageFormat.Text.ToLower()); }
 		}
 
 		private void ShowBalloonMessage(string message)
