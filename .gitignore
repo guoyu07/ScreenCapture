@@ -1,4 +1,5 @@
 src/ScreenCapture/bin
 src/ScreenCapture/obj
+Installer/Debug
 *.user
 *.suo
