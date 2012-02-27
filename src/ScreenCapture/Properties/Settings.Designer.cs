@@ -94,5 +94,17 @@ namespace RSTL.ScreenCapture.Properties {
                 this["SaveBehavior"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Shortcut {
+            get {
+                return ((string)(this["Shortcut"]));
+            }
+            set {
+                this["Shortcut"] = value;
+            }
+        }
     }
 }

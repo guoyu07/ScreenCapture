@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Collections;
+using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace RSTL.ScreenCapture
 {
@@ -13,10 +17,53 @@ namespace RSTL.ScreenCapture
 		public const string AutoCheckUpdatesKey = "AutoCheckUpdates";
 		public const string HotKeyShortcutKey = "HotKeyShortcut";
 		public const string SaveBehaviorKey = "SaveBehavior";
+		public const string ShortcutKey = "Shortcut";
 
 		public void Save()
 		{
 			Properties.Settings.Default.Save();
+		}
+
+		public LinkedList<Keys> Shortcut
+		{
+			set
+			{
+				KeysConverter kc = new KeysConverter();
+				ArrayList l = new ArrayList();
+
+				foreach (Keys key in value)
+				{
+					l.Add(kc.ConvertToString(key));
+				}
+
+				XmlSerializer x = new XmlSerializer(l.GetType());
+				StringWriter writer = new StringWriter();
+				x.Serialize(writer, l);
+				Set(ShortcutKey, writer.ToString());
+			}
+
+			get
+			{
+				string s = (string)Get(ShortcutKey);
+
+				if (String.IsNullOrEmpty(s))
+				{
+					return new LinkedList<Keys>();
+				}
+
+				XmlSerializer x = new XmlSerializer(typeof(ArrayList));
+				ArrayList l = (ArrayList)x.Deserialize(new StringReader(s));
+
+				KeysConverter kc = new KeysConverter();
+				LinkedList<Keys> result = new LinkedList<Keys>();
+
+				foreach (String item in l)
+				{
+					result.AddLast((Keys)kc.ConvertFromString(item));
+				}
+
+				return result;
+			}
 		}
 
 		public string ImageFormat

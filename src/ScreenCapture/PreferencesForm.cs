@@ -20,7 +20,7 @@ namespace RSTL.ScreenCapture
 		[DllImport("user32.dll")]
 		private static extern bool HideCaret(IntPtr hWnd);
 		private Hotkey hotKey;
-		private LinkedList<KeyEventArgs> shortcutKeys = new LinkedList<KeyEventArgs>();
+		private LinkedList<Keys> shortcutKeys = new LinkedList<Keys>();
 
 		public PreferencesForm()
 		{
@@ -35,6 +35,7 @@ namespace RSTL.ScreenCapture
 			saveFolderPath.Text = s.SaveDirectory == String.Empty ? Environment.GetFolderPath(Environment.SpecialFolder.Desktop) : s.SaveDirectory;
 			startAutomatically.Checked = s.StartWithWindows;
 			checkUpdates.Checked = s.AutoCheckUpdates;
+			shortcutKeys = s.Shortcut;
 
 			if (s.SaveBehavior == SaveBehaviorEnum.Ask)
 			{
@@ -48,6 +49,8 @@ namespace RSTL.ScreenCapture
 			{
 				autoSave.Checked = true;
 			}
+
+			DisplayShortcut();
 		}
 
 		~PreferencesForm()
@@ -230,12 +233,17 @@ namespace RSTL.ScreenCapture
 			}
 			else if (CountNonMetaKeys() == 0)
 			{
-				shortcutKeys.AddLast(e);
+				shortcutKeys.AddLast(e.KeyCode);
 			}
 
+			DisplayShortcut();
+		}
+
+		private void DisplayShortcut()
+		{
 			StringBuilder sb = new StringBuilder();
 
-			foreach (KeyEventArgs k in SortShortcuts())
+			foreach (Keys k in SortShortcuts())
 			{
 				if (sb.Length > 0)
 				{
@@ -248,19 +256,19 @@ namespace RSTL.ScreenCapture
 			shortcut.Text = sb.ToString();
 		}
 
-		private IEnumerable<KeyEventArgs> SortShortcuts()
+		private IEnumerable<Keys> SortShortcuts()
 		{
-			return (from item in shortcutKeys orderby item.KeyCode select item);
+			return (from item in shortcutKeys orderby item select item);
 		}
 
 		private int CountNonMetaKeys()
 		{
-			return (from item in shortcutKeys where !IsMetaKey(item.KeyCode) select item).Count();
+			return (from item in shortcutKeys where !IsMetaKey(item) select item).Count();
 		}
 
 		private bool ShortcutContainsKey(KeyEventArgs e)
 		{
-			return (from item in shortcutKeys where item.KeyCode == e.KeyCode select item).Count() > 0;
+			return (from item in shortcutKeys where item == e.KeyCode select item).Count() > 0;
 		}
 
 		private bool IsMetaKey(Keys k)
@@ -269,30 +277,30 @@ namespace RSTL.ScreenCapture
 				|| k == Keys.Menu || k == Keys.RWin || k == Keys.LWin;
 		}
 
-		private string GetNiceKey(KeyEventArgs e)
+		private string GetNiceKey(Keys key)
 		{
-			if (e.KeyCode == Keys.ControlKey)
+			if (key == Keys.ControlKey)
 			{
 				return "CTRL";
 			}
-			else if (e.KeyCode == Keys.Menu || e.KeyCode == Keys.Alt)
+			else if (key == Keys.Menu || key == Keys.Alt)
 			{
 				return "ALT";
 			}
-			else if (e.KeyCode == Keys.LWin || e.KeyCode == Keys.RWin)
+			else if (key == Keys.LWin || key == Keys.RWin)
 			{
 				return "WIN";
 			}
-			else if (e.KeyCode == Keys.ShiftKey)
+			else if (key == Keys.ShiftKey)
 			{
 				return "SHIFT";
 			}
-			else if (e.KeyValue >= '0' && e.KeyValue <= '9')
+			else if (key >= Keys.D0 && key <= Keys.D9)
 			{
-				return ((char)e.KeyValue).ToString();
+				return ((char)key).ToString();
 			}
 
-			return e.KeyCode.ToString();
+			return key.ToString();
 		}
 
 		private void shortcut_Enter(object sender, EventArgs e)
@@ -304,7 +312,7 @@ namespace RSTL.ScreenCapture
 		{
 			try
 			{
-				int notMetaCount = shortcutKeys.Count(k => !IsMetaKey(k.KeyCode));
+				int notMetaCount = shortcutKeys.Count(k => !IsMetaKey(k));
 				if (notMetaCount == 0)
 				{
 					ShowErrorMessage("You should also choose one character that is not CTRL, SHIFT, ALT or WIN");
@@ -317,27 +325,27 @@ namespace RSTL.ScreenCapture
 				bool win = false;
 				Keys key = Keys.F19;
 
-				foreach (KeyEventArgs item in shortcutKeys)
+				foreach (Keys item in shortcutKeys)
 				{
-					if (item.KeyCode == Keys.ControlKey)
+					if (item == Keys.ControlKey)
 					{
 						ctrl = true;
 					}
-					else if (item.KeyCode == Keys.ShiftKey)
+					else if (item == Keys.ShiftKey)
 					{
 						shift = true;
 					}
-					else if (item.KeyCode == Keys.LWin || item.KeyCode == Keys.RWin)
+					else if (item == Keys.LWin || item == Keys.RWin)
 					{
 						win = true;
 					}
-					else if (item.KeyCode == Keys.Alt || item.KeyCode == Keys.Menu)
+					else if (item == Keys.Alt || item == Keys.Menu)
 					{
 						alt = true;
 					}
 					else
 					{
-						key = item.KeyCode;
+						key = item;
 					}
 				}
 
@@ -352,6 +360,7 @@ namespace RSTL.ScreenCapture
 				if (hotKey.GetCanRegister(shortcut))
 				{
 					hotKey.Register(shortcut);
+					new UserSettings().Shortcut = shortcutKeys;
 				}
 				else
 				{

@@ -20,5 +20,8 @@
     <Setting Name="SaveBehavior" Type="System.String" Scope="User">
       <Value Profile="(Default)">Ask</Value>
     </Setting>
+    <Setting Name="Shortcut" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
