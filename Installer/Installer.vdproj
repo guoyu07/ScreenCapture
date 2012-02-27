@@ -196,6 +196,17 @@
                 {
                 }
             }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_7FB74742C06B4D8187764DEB47E53AF3"
+            {
+            "Name" = "8:#1928"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:StartupFolder"
+                "Folders"
+                {
+                }
+            }
         }
         "LaunchCondition"
         {
@@ -213,11 +224,11 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Screen Capture Tool"
         "ProductCode" = "8:{94C737CF-FFF7-4436-BADB-1C5CE867D3FF}"
-        "PackageCode" = "8:{C8415BC2-0289-44C7-8ACF-81877CC55C47}"
+        "PackageCode" = "8:{7DDD1A25-7EE9-4AA2-8CEC-E28E0E8A4494}"
         "UpgradeCode" = "8:{DAE53AFD-158F-46E5-A78A-E13BB3FB3648}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
@@ -333,6 +344,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_273846FCD626446B8358FDCFBD908D13"
+            {
+            "Name" = "8:Screen Capture Tool"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:TRUE"
+            "Target" = "8:_9A3065B36DF84454BEDB2F372345DD95"
+            "Folder" = "8:_5BF005660BF2455AB596FF55FAF2292C"
+            "WorkingFolder" = "8:_2902188EF5584691B270E6805872B55A"
+            "Icon" = "8:_7BC73D0FD7DA45D4893C58BF253A74EA"
+            "Feature" = "8:"
+            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_66665668782F40619C03AB4556DD3A55"
             {
             "Name" = "8:Screen Capture Tool"
@@ -344,7 +369,21 @@
             "Target" = "8:_9A3065B36DF84454BEDB2F372345DD95"
             "Folder" = "8:_6BD2633886004D2086EB4BD935153A62"
             "WorkingFolder" = "8:_2902188EF5584691B270E6805872B55A"
-            "Icon" = "8:"
+            "Icon" = "8:_7BC73D0FD7DA45D4893C58BF253A74EA"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_B9CADB3ECA964226979B786B744D3F2D"
+            {
+            "Name" = "8:Screen Capture Tool"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:TRUE"
+            "Target" = "8:_9A3065B36DF84454BEDB2F372345DD95"
+            "Folder" = "8:_7FB74742C06B4D8187764DEB47E53AF3"
+            "WorkingFolder" = "8:_2902188EF5584691B270E6805872B55A"
+            "Icon" = "8:_7BC73D0FD7DA45D4893C58BF253A74EA"
             "Feature" = "8:"
             }
         }
